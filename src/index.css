@@ -4,5 +4,54 @@
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  background: url(./assets/bg.png) no-repeat bottom center;
+  position: relative;
+}
+
+/* GPU-Accelerated Scrolling Background Layer */
+#root:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  /* Pull left edge by one full tile width so scrolling right has content ready */
+  left: calc(-100vh * (1919 / 1200));
+  height: 100vh;
+  /* Width covers the screen, the extra left buffer, and room to slide */
+  width: calc(100vw + (2 * 100vh * (1919 / 1200)));
+
+  background-image: url("./assets/bg.webp");
+  background-repeat: repeat-x;
+  background-position: left bottom;
+  background-size: calc(100vh * (1919 / 1200)) 100vh;
+
+  /* Promote to a dedicated GPU compositing layer */
+  will-change: transform;
+  animation: bg-gpu-scroll-right 10s linear infinite;
+}
+
+/* Bicycle Sprite Layer */
+#root:after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+
+  background-image: url("./assets/bicycle.webp");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: contain;
+
+  width: 12vh;
+  height: 12vh;
+  bottom: 21vh;
+  right: 25vw;
+}
+
+/* Hardware-accelerated translate3d shifting to the right */
+@keyframes bg-gpu-scroll-right {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(calc(100vh * (1919 / 1200)), 0, 0);
+  }
 }
