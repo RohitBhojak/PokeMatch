@@ -1,9 +1,4 @@
-.loading-bike {
-  display: flex;
-  animation: load 7s ease-in-out 1;
-}
-
-.loading-text {
+.loading {
   font-size: 2rem;
   font-family: "Press Start 2P", system-ui;
   font-weight: 400;
@@ -11,23 +6,27 @@
   color: white;
   text-shadow: 1px 1px 2px black;
   position: absolute;
-  top: 80vh;
-  left: 50%;
+  top: 40vh;
+  left: 50vw;
   transform: translateX(-50%);
 }
 
-.loading-text::after {
+.loading::before {
   content: "";
-  animation: dots 3s infinite;
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 16px);
+  width: 100px;
+  height: 100px;
+
+  background: url("/pokeball_icon.svg") center / contain no-repeat;
+  transform: translateX(-50%);
+  animation: spin 1.4s linear infinite;
 }
 
-@keyframes load {
-  0% {
-    translate: 100vw 60vh;
-  }
-  100% {
-    translate: -10vw 60vh;
-  }
+.loading::after {
+  content: "";
+  animation: dots 3s infinite;
 }
 
 @keyframes dots {
@@ -44,5 +43,11 @@
   80%,
   100% {
     content: "...";
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: translateX(-50%) rotate(360deg);
   }
 }
